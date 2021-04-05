@@ -1,5 +1,20 @@
-const { app, BrowserWindow } = require('electron');
+const { app,
+  BrowserWindow,
+  Tray,
+  Menu,
+  protocol,
+  ipcRenderer,
+  Notification,
+  autoUpdater } = require('electron');
 const path = require('path');
+
+const server = `https://hazel-grandzero.vercel.app/`
+const url = `${server}/update/${process.platform}/${app.getVersion()}`
+autoUpdater.setFeedURL({ url})
+
+setInterval(()=>{
+  autoUpdater.checkForUpdates();
+},[])
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -44,3 +59,54 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
+/**
+ * 
+ * AutoUpdate listeners
+ * 
+ * 
+ */
+ autoUpdater.on('checking-for-update', () => {
+  const updateNotification = new Notification({
+     title:"Güncellemeler kontrol ediliyor",
+     body:"Yükleme otomatik olarak başlatılacak"
+  })
+  updateNotification.show();
+});
+autoUpdater.on('update-available', info => {
+  const updateNotification = new Notification({
+     title:"Yeni bir güncelleme mevcut",
+     body:"Yükleme otomatik olarak başlatılacak"
+  })
+  updateNotification.show();
+});
+//  autoUpdater.on('update-not-available', info => {
+//    sendStatusToWindow('Update not available.');
+//  });
+autoUpdater.on('error', err => {
+  const updateNotification = new Notification({
+     title:"Güncelleme esnasında bir hata oluştu",
+     body:err
+  })
+  //console.log("Güncelleme hatası : ", err);
+  updateNotification.show()
+});
+//  autoUpdater.on('download-progress', progressObj => {
+//    sendStatusToWindow(
+//      `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
+//    );
+//  });
+
+autoUpdater.on('update-downloaded', info => {
+  const restartNotification = new Notification({
+     title:"Güncelleme indirildi",
+     body:"Program güncel haliyle yüklenip baştan başlatılacak"
+  })
+  restartNotification.show()
+});
+
+autoUpdater.on('update-downloaded', info => {
+  // Wait 5 seconds, then quit and install
+  // In your application, you don't need to wait 500 ms.
+  // You could call autoUpdater.quitAndInstall(); immediately
+  autoUpdater.quitAndInstall();
+});
