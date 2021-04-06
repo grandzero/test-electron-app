@@ -7,9 +7,11 @@ const { app,
   Notification } = require('electron');
 const path = require('path');
 const { autoUpdater } = require('electron-updater');
-// const server = `https://electron-test-updater.herokuapp.com`
+//const server="https://hazel-grandzero.vercel.app";
+//const server = `https://electron-test-updater.herokuapp.com`
 // const url = `${server}/update/${process.platform}/${app.getVersion()}`
-// autoUpdater.setFeedURL(url)
+//autoUpdater.setFeedURL([url])
+//const autoUpdater = new AppUpdater(server)
 let win;
 setTimeout(()=>{
   autoUpdater.checkForUpdates();
