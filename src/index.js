@@ -4,13 +4,12 @@ const { app,
   Menu,
   protocol,
   ipcRenderer,
-  Notification,
-  autoUpdater } = require('electron');
+  Notification } = require('electron');
 const path = require('path');
-
-const server = `https://hazel-grandzero.vercel.app/`
+const { autoUpdater } = require('electron-updater');
+const server = `https://electron-test-updater.herokuapp.com`
 const url = `${server}/update/${process.platform}/${app.getVersion()}`
-autoUpdater.setFeedURL({ url})
+autoUpdater.setFeedURL(url)
 
 setInterval(()=>{
   autoUpdater.checkForUpdates();

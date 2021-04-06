@@ -1,7 +1,7 @@
 {
   "name": "testapp",
   "productName": "testapp",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "My Electron application description",
   "main": "src/index.js",
   "scripts": {
@@ -9,7 +9,9 @@
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
+    "lint": "echo \"No linting configured\"",
+    "build": "electron-builder build  --win --publish never",
+    "deploy": "electron-builder build  --win --publish always"
   },
   "keywords": [],
   "author": {
@@ -44,8 +46,27 @@
       ]
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grandzero/test-electron-app"
+  },
+  "publish": {
+    "provider": "github",
+    "releaseType": "release"
+  },
+  "build": {
+    "productName": "testApp",
+    "appId": "com.testApp.yourapp",
+    "directories": {
+      "output": "build"
+    },
+    "publish": [
+      "github"
+    ]
+  },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "electron-updater": "^4.3.8"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.54",
