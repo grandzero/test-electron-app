@@ -6,7 +6,7 @@ const { app,
   ipcRenderer,
   Notification } = require('electron');
 const path = require('path');
-const { autoUpdater } = require('electron-updater');
+const { NsisUpdater } = require('electron-updater');
 //const server="https://hazel-grandzero.vercel.app";
 //const server = `https://electron-test-updater.herokuapp.com`
 // const url = `${server}/update/${process.platform}/${app.getVersion()}`
