@@ -8,6 +8,13 @@
   <body>
     <h1>💖 Hello World!</h1>
     <p>Welcome to your Electron application.</p>
-    <h1>Hello from new release</h1>
+    <p>Test</p>
+    <script>
+      const {ipcRenderer, Notification} = require('electron');
+      ipcRenderer.on("message",(event,arg) => {
+        console.log("Event is : ", event);
+        console.log("Arg is : ", arg);
+      })
+    </script>
   </body>
 </html>

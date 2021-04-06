@@ -7,13 +7,13 @@ const { app,
   Notification } = require('electron');
 const path = require('path');
 const { autoUpdater } = require('electron-updater');
-const server = `https://electron-test-updater.herokuapp.com`
-const url = `${server}/update/${process.platform}/${app.getVersion()}`
-autoUpdater.setFeedURL(url)
-
-setInterval(()=>{
+// const server = `https://electron-test-updater.herokuapp.com`
+// const url = `${server}/update/${process.platform}/${app.getVersion()}`
+// autoUpdater.setFeedURL(url)
+let win;
+setTimeout(()=>{
   autoUpdater.checkForUpdates();
-},[])
+},3000)
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -25,8 +25,15 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    webPreferences: { 
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+      devTools:true
+    }
   });
-
+  win=mainWindow;
+  win.webContents.openDevTools();
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
 
@@ -86,6 +93,7 @@ autoUpdater.on('error', err => {
      title:"Güncelleme esnasında bir hata oluştu",
      body:err
   })
+  win.webContents.send("message",err);
   //console.log("Güncelleme hatası : ", err);
   updateNotification.show()
 });
